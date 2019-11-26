@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <!--mysql 连接数据库jar 这里选择自己本地位置-->
+    <classPathEntry location="D:\XY\wlcszs\mysql-connector-java-5.1.34.jar" />
+    <!-- 配置一个代码生成操作，如果生成的目录或是数据库不一样，只需要参考增加一个context节点即可 -->
+    <context id="mycode" targetRuntime="MyBatis3">
+        <commentGenerator>
+            <!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+            <property name="suppressAllComments" value="true" />
+            <property name="useActualColumnNames" value="false" />
+            <property name="beginningDelimiter" value="`"/>
+            <property name="endingDelimiter" value="`"/>
+        </commentGenerator>
+        <!-- 配置插件 -->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://47.98.177.63:3306/appshop" userId="root"
+                        password="awbjlt123">
+        </jdbcConnection>
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false" />
+        </javaTypeResolver>
+
+        <!-- 配置model生成位置 -->
+        <javaModelGenerator targetPackage="com.awb.model"
+                            targetProject="src/main/java">
+            <property name="enableSubPackages" value="true" />
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+
+        <!-- 配置sqlmap生成位置 -->
+        <sqlMapGenerator targetPackage="com.awb.mapper"
+                         targetProject="src/main/resources">
+            <property name="enableSubPackages" value="true" />
+        </sqlMapGenerator>
+
+        <!-- 配置mapper接口生成位置 -->
+        <javaClientGenerator type="XMLMAPPER"
+                             targetPackage="com.awb.mapper" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true" />
+        </javaClientGenerator>
+
+
+
+        <table tableName="shoporder" domainObjectName="Shoporder"  enableDeleteByExample="false"  enableUpdateByExample="true"  >
+        </table>
+        <!--<table tableName="awb_node" domainObjectName="Node"  enableDeleteByExample="false"  enableUpdateByExample="true"  >-->
+        <!--</table>-->
+        <!--<table tableName="awb_order" domainObjectName="Order"  enableDeleteByExample="false"  enableUpdateByExample="true"  >-->
+        <!--</table>-->
+        <!--<table tableName="awb_category" domainObjectName="Category"  enableDeleteByExample="false"  enableUpdateByExample="true"  >-->
+        <!--</table>-->
+        <!--<table tableName="awb_account" domainObjectName="Account"  enableDeleteByExample="false"  enableUpdateByExample="true"  >-->
+        <!--</table>-->
+        <!--<table tableName="awb_pre_account" domainObjectName="PreAccount"  enableDeleteByExample="false"  enableUpdateByExample="true"  >-->
+        <!--</table>-->
+        <!--<table tableName="awb_role" domainObjectName="Role"  enableDeleteByExample="false"  enableUpdateByExample="true"  >-->
+        <!--</table>-->
+        <!--<table tableName="awb_role_category" domainObjectName="RoleCategory"  enableDeleteByExample="false"  enableUpdateByExample="true"  >-->
+        <!--</table>-->
+        <!--<table tableName="awb_fund_order" domainObjectName="FundOrder"  enableDeleteByExample="false"  enableUpdateByExample="true"  >-->
+        <!--</table>-->
+        <!--<table tableName="awb_fund_record" domainObjectName="FundRecord"  enableDeleteByExample="false"  enableUpdateByExample="true"  >-->
+        <!--</table>-->
+        <!--<table tableName="awb_goods_record" domainObjectName="GoodsRecord"  enableDeleteByExample="false"  enableUpdateByExample="true"  >-->
+        <!--</table>-->
+        <!--<table tableName="awb_message" domainObjectName="Message"  enableDeleteByExample="false"  enableUpdateByExample="true"  >-->
+        <!--</table>-->
+        <!--<table tableName="awb_person_record" domainObjectName="PersonRecord"  enableDeleteByExample="false"  enableUpdateByExample="true"  >-->
+        <!--</table>-->
+
+    </context>
+</generatorConfiguration>

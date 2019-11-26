@@ -1,0 +1,521 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.awb.mapper.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.awb.model.User" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="identitycard" property="identitycard" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="parentid" property="parentid" jdbcType="VARCHAR" />
+    <result column="agentarea" property="agentarea" jdbcType="VARCHAR" />
+    <result column="superiorid" property="superiorid" jdbcType="VARCHAR" />
+    <result column="storename" property="storename" jdbcType="VARCHAR" />
+    <result column="trade_password" property="tradePassword" jdbcType="VARCHAR" />
+    <result column="times" property="times" jdbcType="INTEGER" />
+    <result column="admnum" property="admnum" jdbcType="INTEGER" />
+    <result column="totalnum" property="totalnum" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="flg" property="flg" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="tgm" property="tgm" jdbcType="VARCHAR" />
+    <result column="nodelever" property="nodelever" jdbcType="INTEGER" />
+    <result column="is_delete" property="isDelete" jdbcType="INTEGER" />
+    <result column="balance" property="balance" jdbcType="DOUBLE" />
+    <result column="money" property="money" jdbcType="DOUBLE" />
+    <result column="totalmoney" property="totalmoney" jdbcType="DOUBLE" />
+    <result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="updatetime" property="updatetime" jdbcType="TIMESTAMP" />
+    <result column="coupontimes" property="coupontimes" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, phone, name, identitycard, password, parentid, agentarea, superiorid, storename, 
+    trade_password, times, admnum, totalnum, status, flg, type, tgm, nodelever, is_delete, 
+    balance, money, totalmoney, createtime, updatetime, coupontimes
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.awb.model.UserExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from user
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.awb.model.User" >
+    insert into user (id, phone, name, 
+      identitycard, password, parentid, 
+      agentarea, superiorid, storename, 
+      trade_password, times, admnum, 
+      totalnum, status, flg, 
+      type, tgm, nodelever, 
+      is_delete, balance, money, 
+      totalmoney, createtime, updatetime, 
+      coupontimes)
+    values (#{id,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{identitycard,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{parentid,jdbcType=VARCHAR}, 
+      #{agentarea,jdbcType=VARCHAR}, #{superiorid,jdbcType=VARCHAR}, #{storename,jdbcType=VARCHAR}, 
+      #{tradePassword,jdbcType=VARCHAR}, #{times,jdbcType=INTEGER}, #{admnum,jdbcType=INTEGER}, 
+      #{totalnum,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{flg,jdbcType=INTEGER}, 
+      #{type,jdbcType=INTEGER}, #{tgm,jdbcType=VARCHAR}, #{nodelever,jdbcType=INTEGER}, 
+      #{isDelete,jdbcType=INTEGER}, #{balance,jdbcType=DOUBLE}, #{money,jdbcType=DOUBLE}, 
+      #{totalmoney,jdbcType=DOUBLE}, #{createtime,jdbcType=TIMESTAMP}, #{updatetime,jdbcType=TIMESTAMP}, 
+      #{coupontimes,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.awb.model.User" >
+    insert into user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="identitycard != null" >
+        identitycard,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="parentid != null" >
+        parentid,
+      </if>
+      <if test="agentarea != null" >
+        agentarea,
+      </if>
+      <if test="superiorid != null" >
+        superiorid,
+      </if>
+      <if test="storename != null" >
+        storename,
+      </if>
+      <if test="tradePassword != null" >
+        trade_password,
+      </if>
+      <if test="times != null" >
+        times,
+      </if>
+      <if test="admnum != null" >
+        admnum,
+      </if>
+      <if test="totalnum != null" >
+        totalnum,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="flg != null" >
+        flg,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="tgm != null" >
+        tgm,
+      </if>
+      <if test="nodelever != null" >
+        nodelever,
+      </if>
+      <if test="isDelete != null" >
+        is_delete,
+      </if>
+      <if test="balance != null" >
+        balance,
+      </if>
+      <if test="money != null" >
+        money,
+      </if>
+      <if test="totalmoney != null" >
+        totalmoney,
+      </if>
+      <if test="createtime != null" >
+        createtime,
+      </if>
+      <if test="updatetime != null" >
+        updatetime,
+      </if>
+      <if test="coupontimes != null" >
+        coupontimes,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="identitycard != null" >
+        #{identitycard,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="parentid != null" >
+        #{parentid,jdbcType=VARCHAR},
+      </if>
+      <if test="agentarea != null" >
+        #{agentarea,jdbcType=VARCHAR},
+      </if>
+      <if test="superiorid != null" >
+        #{superiorid,jdbcType=VARCHAR},
+      </if>
+      <if test="storename != null" >
+        #{storename,jdbcType=VARCHAR},
+      </if>
+      <if test="tradePassword != null" >
+        #{tradePassword,jdbcType=VARCHAR},
+      </if>
+      <if test="times != null" >
+        #{times,jdbcType=INTEGER},
+      </if>
+      <if test="admnum != null" >
+        #{admnum,jdbcType=INTEGER},
+      </if>
+      <if test="totalnum != null" >
+        #{totalnum,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="flg != null" >
+        #{flg,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="tgm != null" >
+        #{tgm,jdbcType=VARCHAR},
+      </if>
+      <if test="nodelever != null" >
+        #{nodelever,jdbcType=INTEGER},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="balance != null" >
+        #{balance,jdbcType=DOUBLE},
+      </if>
+      <if test="money != null" >
+        #{money,jdbcType=DOUBLE},
+      </if>
+      <if test="totalmoney != null" >
+        #{totalmoney,jdbcType=DOUBLE},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null" >
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="coupontimes != null" >
+        #{coupontimes,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.awb.model.UserExample" resultType="java.lang.Integer" >
+    select count(*) from user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update user
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.phone != null" >
+        phone = #{record.phone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.identitycard != null" >
+        identitycard = #{record.identitycard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.password != null" >
+        password = #{record.password,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parentid != null" >
+        parentid = #{record.parentid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.agentarea != null" >
+        agentarea = #{record.agentarea,jdbcType=VARCHAR},
+      </if>
+      <if test="record.superiorid != null" >
+        superiorid = #{record.superiorid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.storename != null" >
+        storename = #{record.storename,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tradePassword != null" >
+        trade_password = #{record.tradePassword,jdbcType=VARCHAR},
+      </if>
+      <if test="record.times != null" >
+        times = #{record.times,jdbcType=INTEGER},
+      </if>
+      <if test="record.admnum != null" >
+        admnum = #{record.admnum,jdbcType=INTEGER},
+      </if>
+      <if test="record.totalnum != null" >
+        totalnum = #{record.totalnum,jdbcType=INTEGER},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.flg != null" >
+        flg = #{record.flg,jdbcType=INTEGER},
+      </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=INTEGER},
+      </if>
+      <if test="record.tgm != null" >
+        tgm = #{record.tgm,jdbcType=VARCHAR},
+      </if>
+      <if test="record.nodelever != null" >
+        nodelever = #{record.nodelever,jdbcType=INTEGER},
+      </if>
+      <if test="record.isDelete != null" >
+        is_delete = #{record.isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="record.balance != null" >
+        balance = #{record.balance,jdbcType=DOUBLE},
+      </if>
+      <if test="record.money != null" >
+        money = #{record.money,jdbcType=DOUBLE},
+      </if>
+      <if test="record.totalmoney != null" >
+        totalmoney = #{record.totalmoney,jdbcType=DOUBLE},
+      </if>
+      <if test="record.createtime != null" >
+        createtime = #{record.createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatetime != null" >
+        updatetime = #{record.updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.coupontimes != null" >
+        coupontimes = #{record.coupontimes,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update user
+    set id = #{record.id,jdbcType=VARCHAR},
+      phone = #{record.phone,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      identitycard = #{record.identitycard,jdbcType=VARCHAR},
+      password = #{record.password,jdbcType=VARCHAR},
+      parentid = #{record.parentid,jdbcType=VARCHAR},
+      agentarea = #{record.agentarea,jdbcType=VARCHAR},
+      superiorid = #{record.superiorid,jdbcType=VARCHAR},
+      storename = #{record.storename,jdbcType=VARCHAR},
+      trade_password = #{record.tradePassword,jdbcType=VARCHAR},
+      times = #{record.times,jdbcType=INTEGER},
+      admnum = #{record.admnum,jdbcType=INTEGER},
+      totalnum = #{record.totalnum,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=INTEGER},
+      flg = #{record.flg,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=INTEGER},
+      tgm = #{record.tgm,jdbcType=VARCHAR},
+      nodelever = #{record.nodelever,jdbcType=INTEGER},
+      is_delete = #{record.isDelete,jdbcType=INTEGER},
+      balance = #{record.balance,jdbcType=DOUBLE},
+      money = #{record.money,jdbcType=DOUBLE},
+      totalmoney = #{record.totalmoney,jdbcType=DOUBLE},
+      createtime = #{record.createtime,jdbcType=TIMESTAMP},
+      updatetime = #{record.updatetime,jdbcType=TIMESTAMP},
+      coupontimes = #{record.coupontimes,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.awb.model.User" >
+    update user
+    <set >
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="identitycard != null" >
+        identitycard = #{identitycard,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="parentid != null" >
+        parentid = #{parentid,jdbcType=VARCHAR},
+      </if>
+      <if test="agentarea != null" >
+        agentarea = #{agentarea,jdbcType=VARCHAR},
+      </if>
+      <if test="superiorid != null" >
+        superiorid = #{superiorid,jdbcType=VARCHAR},
+      </if>
+      <if test="storename != null" >
+        storename = #{storename,jdbcType=VARCHAR},
+      </if>
+      <if test="tradePassword != null" >
+        trade_password = #{tradePassword,jdbcType=VARCHAR},
+      </if>
+      <if test="times != null" >
+        times = #{times,jdbcType=INTEGER},
+      </if>
+      <if test="admnum != null" >
+        admnum = #{admnum,jdbcType=INTEGER},
+      </if>
+      <if test="totalnum != null" >
+        totalnum = #{totalnum,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="flg != null" >
+        flg = #{flg,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="tgm != null" >
+        tgm = #{tgm,jdbcType=VARCHAR},
+      </if>
+      <if test="nodelever != null" >
+        nodelever = #{nodelever,jdbcType=INTEGER},
+      </if>
+      <if test="isDelete != null" >
+        is_delete = #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="balance != null" >
+        balance = #{balance,jdbcType=DOUBLE},
+      </if>
+      <if test="money != null" >
+        money = #{money,jdbcType=DOUBLE},
+      </if>
+      <if test="totalmoney != null" >
+        totalmoney = #{totalmoney,jdbcType=DOUBLE},
+      </if>
+      <if test="createtime != null" >
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null" >
+        updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="coupontimes != null" >
+        coupontimes = #{coupontimes,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.awb.model.User" >
+    update user
+    set phone = #{phone,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      identitycard = #{identitycard,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      parentid = #{parentid,jdbcType=VARCHAR},
+      agentarea = #{agentarea,jdbcType=VARCHAR},
+      superiorid = #{superiorid,jdbcType=VARCHAR},
+      storename = #{storename,jdbcType=VARCHAR},
+      trade_password = #{tradePassword,jdbcType=VARCHAR},
+      times = #{times,jdbcType=INTEGER},
+      admnum = #{admnum,jdbcType=INTEGER},
+      totalnum = #{totalnum,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      flg = #{flg,jdbcType=INTEGER},
+      type = #{type,jdbcType=INTEGER},
+      tgm = #{tgm,jdbcType=VARCHAR},
+      nodelever = #{nodelever,jdbcType=INTEGER},
+      is_delete = #{isDelete,jdbcType=INTEGER},
+      balance = #{balance,jdbcType=DOUBLE},
+      money = #{money,jdbcType=DOUBLE},
+      totalmoney = #{totalmoney,jdbcType=DOUBLE},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      coupontimes = #{coupontimes,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.awb.mapper.MoneyrecordMapper" >
+  <resultMap id="BaseResultMap" type="com.awb.model.Moneyrecord" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="dealid" property="dealid" jdbcType="VARCHAR" />
+    <result column="accountnum" property="accountnum" jdbcType="VARCHAR" />
+    <result column="arrivetime" property="arrivetime" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="picture" property="picture" jdbcType="VARCHAR" />
+    <result column="picture2" property="picture2" jdbcType="VARCHAR" />
+    <result column="picture3" property="picture3" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="updatetime" property="updatetime" jdbcType="TIMESTAMP" />
+    <result column="money" property="money" jdbcType="DOUBLE" />
+    <result column="realmoney" property="realmoney" jdbcType="DOUBLE" />
+    <result column="shouldmoney" property="shouldmoney" jdbcType="DOUBLE" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, dealid, accountnum, arrivetime, remark, picture, picture2, picture3, type, createtime, 
+    updatetime, money, realmoney, shouldmoney
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.awb.model.MoneyrecordExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from moneyrecord
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from moneyrecord
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from moneyrecord
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.awb.model.Moneyrecord" >
+    insert into moneyrecord (id, dealid, accountnum, 
+      arrivetime, remark, picture, 
+      picture2, picture3, type, 
+      createtime, updatetime, money, 
+      realmoney, shouldmoney)
+    values (#{id,jdbcType=VARCHAR}, #{dealid,jdbcType=VARCHAR}, #{accountnum,jdbcType=VARCHAR}, 
+      #{arrivetime,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{picture,jdbcType=VARCHAR}, 
+      #{picture2,jdbcType=VARCHAR}, #{picture3,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
+      #{createtime,jdbcType=TIMESTAMP}, #{updatetime,jdbcType=TIMESTAMP}, #{money,jdbcType=DOUBLE}, 
+      #{realmoney,jdbcType=DOUBLE}, #{shouldmoney,jdbcType=DOUBLE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.awb.model.Moneyrecord" >
+    insert into moneyrecord
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="dealid != null" >
+        dealid,
+      </if>
+      <if test="accountnum != null" >
+        accountnum,
+      </if>
+      <if test="arrivetime != null" >
+        arrivetime,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="picture != null" >
+        picture,
+      </if>
+      <if test="picture2 != null" >
+        picture2,
+      </if>
+      <if test="picture3 != null" >
+        picture3,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="createtime != null" >
+        createtime,
+      </if>
+      <if test="updatetime != null" >
+        updatetime,
+      </if>
+      <if test="money != null" >
+        money,
+      </if>
+      <if test="realmoney != null" >
+        realmoney,
+      </if>
+      <if test="shouldmoney != null" >
+        shouldmoney,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="dealid != null" >
+        #{dealid,jdbcType=VARCHAR},
+      </if>
+      <if test="accountnum != null" >
+        #{accountnum,jdbcType=VARCHAR},
+      </if>
+      <if test="arrivetime != null" >
+        #{arrivetime,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="picture != null" >
+        #{picture,jdbcType=VARCHAR},
+      </if>
+      <if test="picture2 != null" >
+        #{picture2,jdbcType=VARCHAR},
+      </if>
+      <if test="picture3 != null" >
+        #{picture3,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null" >
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="money != null" >
+        #{money,jdbcType=DOUBLE},
+      </if>
+      <if test="realmoney != null" >
+        #{realmoney,jdbcType=DOUBLE},
+      </if>
+      <if test="shouldmoney != null" >
+        #{shouldmoney,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.awb.model.MoneyrecordExample" resultType="java.lang.Integer" >
+    select count(*) from moneyrecord
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update moneyrecord
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dealid != null" >
+        dealid = #{record.dealid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.accountnum != null" >
+        accountnum = #{record.accountnum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.arrivetime != null" >
+        arrivetime = #{record.arrivetime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.picture != null" >
+        picture = #{record.picture,jdbcType=VARCHAR},
+      </if>
+      <if test="record.picture2 != null" >
+        picture2 = #{record.picture2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.picture3 != null" >
+        picture3 = #{record.picture3,jdbcType=VARCHAR},
+      </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=INTEGER},
+      </if>
+      <if test="record.createtime != null" >
+        createtime = #{record.createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatetime != null" >
+        updatetime = #{record.updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.money != null" >
+        money = #{record.money,jdbcType=DOUBLE},
+      </if>
+      <if test="record.realmoney != null" >
+        realmoney = #{record.realmoney,jdbcType=DOUBLE},
+      </if>
+      <if test="record.shouldmoney != null" >
+        shouldmoney = #{record.shouldmoney,jdbcType=DOUBLE},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update moneyrecord
+    set id = #{record.id,jdbcType=VARCHAR},
+      dealid = #{record.dealid,jdbcType=VARCHAR},
+      accountnum = #{record.accountnum,jdbcType=VARCHAR},
+      arrivetime = #{record.arrivetime,jdbcType=VARCHAR},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      picture = #{record.picture,jdbcType=VARCHAR},
+      picture2 = #{record.picture2,jdbcType=VARCHAR},
+      picture3 = #{record.picture3,jdbcType=VARCHAR},
+      type = #{record.type,jdbcType=INTEGER},
+      createtime = #{record.createtime,jdbcType=TIMESTAMP},
+      updatetime = #{record.updatetime,jdbcType=TIMESTAMP},
+      money = #{record.money,jdbcType=DOUBLE},
+      realmoney = #{record.realmoney,jdbcType=DOUBLE},
+      shouldmoney = #{record.shouldmoney,jdbcType=DOUBLE}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.awb.model.Moneyrecord" >
+    update moneyrecord
+    <set >
+      <if test="dealid != null" >
+        dealid = #{dealid,jdbcType=VARCHAR},
+      </if>
+      <if test="accountnum != null" >
+        accountnum = #{accountnum,jdbcType=VARCHAR},
+      </if>
+      <if test="arrivetime != null" >
+        arrivetime = #{arrivetime,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="picture != null" >
+        picture = #{picture,jdbcType=VARCHAR},
+      </if>
+      <if test="picture2 != null" >
+        picture2 = #{picture2,jdbcType=VARCHAR},
+      </if>
+      <if test="picture3 != null" >
+        picture3 = #{picture3,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null" >
+        updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="money != null" >
+        money = #{money,jdbcType=DOUBLE},
+      </if>
+      <if test="realmoney != null" >
+        realmoney = #{realmoney,jdbcType=DOUBLE},
+      </if>
+      <if test="shouldmoney != null" >
+        shouldmoney = #{shouldmoney,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.awb.model.Moneyrecord" >
+    update moneyrecord
+    set dealid = #{dealid,jdbcType=VARCHAR},
+      accountnum = #{accountnum,jdbcType=VARCHAR},
+      arrivetime = #{arrivetime,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      picture = #{picture,jdbcType=VARCHAR},
+      picture2 = #{picture2,jdbcType=VARCHAR},
+      picture3 = #{picture3,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      money = #{money,jdbcType=DOUBLE},
+      realmoney = #{realmoney,jdbcType=DOUBLE},
+      shouldmoney = #{shouldmoney,jdbcType=DOUBLE}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

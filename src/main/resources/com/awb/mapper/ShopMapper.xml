@@ -1,0 +1,457 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.awb.mapper.ShopMapper" >
+  <resultMap id="BaseResultMap" type="com.awb.model.Shop" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="shop_name" property="shopName" jdbcType="VARCHAR" />
+    <result column="shop_price" property="shopPrice" jdbcType="VARCHAR" />
+    <result column="shop_picture" property="shopPicture" jdbcType="VARCHAR" />
+    <result column="userid" property="userid" jdbcType="VARCHAR" />
+    <result column="information" property="information" jdbcType="VARCHAR" />
+    <result column="detai" property="detai" jdbcType="VARCHAR" />
+    <result column="standard" property="standard" jdbcType="VARCHAR" />
+    <result column="is_delete" property="isDelete" jdbcType="INTEGER" />
+    <result column="num" property="num" jdbcType="INTEGER" />
+    <result column="isselling" property="isselling" jdbcType="INTEGER" />
+    <result column="isdirectly" property="isdirectly" jdbcType="INTEGER" />
+    <result column="isnew" property="isnew" jdbcType="INTEGER" />
+    <result column="ord" property="ord" jdbcType="INTEGER" />
+    <result column="sign" property="sign" jdbcType="INTEGER" />
+    <result column="ispreferential" property="ispreferential" jdbcType="INTEGER" />
+    <result column="postage" property="postage" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="updatetime" property="updatetime" jdbcType="TIMESTAMP" />
+    <result column="admnum" property="admnum" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, shop_name, shop_price, shop_picture, userid, information, detai, standard, is_delete, 
+    num, isselling, isdirectly, isnew, ord, sign, ispreferential, postage, remark, createtime, 
+    updatetime, admnum
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.awb.model.ShopExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from shop
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from shop
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from shop
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.awb.model.Shop" >
+    insert into shop (id, shop_name, shop_price, 
+      shop_picture, userid, information, 
+      detai, standard, is_delete, 
+      num, isselling, isdirectly, 
+      isnew, ord, sign, ispreferential, 
+      postage, remark, createtime, 
+      updatetime, admnum)
+    values (#{id,jdbcType=VARCHAR}, #{shopName,jdbcType=VARCHAR}, #{shopPrice,jdbcType=VARCHAR}, 
+      #{shopPicture,jdbcType=VARCHAR}, #{userid,jdbcType=VARCHAR}, #{information,jdbcType=VARCHAR}, 
+      #{detai,jdbcType=VARCHAR}, #{standard,jdbcType=VARCHAR}, #{isDelete,jdbcType=INTEGER}, 
+      #{num,jdbcType=INTEGER}, #{isselling,jdbcType=INTEGER}, #{isdirectly,jdbcType=INTEGER}, 
+      #{isnew,jdbcType=INTEGER}, #{ord,jdbcType=INTEGER}, #{sign,jdbcType=INTEGER}, #{ispreferential,jdbcType=INTEGER}, 
+      #{postage,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, 
+      #{updatetime,jdbcType=TIMESTAMP}, #{admnum,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.awb.model.Shop" >
+    insert into shop
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="shopName != null" >
+        shop_name,
+      </if>
+      <if test="shopPrice != null" >
+        shop_price,
+      </if>
+      <if test="shopPicture != null" >
+        shop_picture,
+      </if>
+      <if test="userid != null" >
+        userid,
+      </if>
+      <if test="information != null" >
+        information,
+      </if>
+      <if test="detai != null" >
+        detai,
+      </if>
+      <if test="standard != null" >
+        standard,
+      </if>
+      <if test="isDelete != null" >
+        is_delete,
+      </if>
+      <if test="num != null" >
+        num,
+      </if>
+      <if test="isselling != null" >
+        isselling,
+      </if>
+      <if test="isdirectly != null" >
+        isdirectly,
+      </if>
+      <if test="isnew != null" >
+        isnew,
+      </if>
+      <if test="ord != null" >
+        ord,
+      </if>
+      <if test="sign != null" >
+        sign,
+      </if>
+      <if test="ispreferential != null" >
+        ispreferential,
+      </if>
+      <if test="postage != null" >
+        postage,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="createtime != null" >
+        createtime,
+      </if>
+      <if test="updatetime != null" >
+        updatetime,
+      </if>
+      <if test="admnum != null" >
+        admnum,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="shopName != null" >
+        #{shopName,jdbcType=VARCHAR},
+      </if>
+      <if test="shopPrice != null" >
+        #{shopPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="shopPicture != null" >
+        #{shopPicture,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="information != null" >
+        #{information,jdbcType=VARCHAR},
+      </if>
+      <if test="detai != null" >
+        #{detai,jdbcType=VARCHAR},
+      </if>
+      <if test="standard != null" >
+        #{standard,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="num != null" >
+        #{num,jdbcType=INTEGER},
+      </if>
+      <if test="isselling != null" >
+        #{isselling,jdbcType=INTEGER},
+      </if>
+      <if test="isdirectly != null" >
+        #{isdirectly,jdbcType=INTEGER},
+      </if>
+      <if test="isnew != null" >
+        #{isnew,jdbcType=INTEGER},
+      </if>
+      <if test="ord != null" >
+        #{ord,jdbcType=INTEGER},
+      </if>
+      <if test="sign != null" >
+        #{sign,jdbcType=INTEGER},
+      </if>
+      <if test="ispreferential != null" >
+        #{ispreferential,jdbcType=INTEGER},
+      </if>
+      <if test="postage != null" >
+        #{postage,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null" >
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="admnum != null" >
+        #{admnum,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.awb.model.ShopExample" resultType="java.lang.Integer" >
+    select count(*) from shop
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update shop
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shopName != null" >
+        shop_name = #{record.shopName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shopPrice != null" >
+        shop_price = #{record.shopPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shopPicture != null" >
+        shop_picture = #{record.shopPicture,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userid != null" >
+        userid = #{record.userid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.information != null" >
+        information = #{record.information,jdbcType=VARCHAR},
+      </if>
+      <if test="record.detai != null" >
+        detai = #{record.detai,jdbcType=VARCHAR},
+      </if>
+      <if test="record.standard != null" >
+        standard = #{record.standard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isDelete != null" >
+        is_delete = #{record.isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="record.num != null" >
+        num = #{record.num,jdbcType=INTEGER},
+      </if>
+      <if test="record.isselling != null" >
+        isselling = #{record.isselling,jdbcType=INTEGER},
+      </if>
+      <if test="record.isdirectly != null" >
+        isdirectly = #{record.isdirectly,jdbcType=INTEGER},
+      </if>
+      <if test="record.isnew != null" >
+        isnew = #{record.isnew,jdbcType=INTEGER},
+      </if>
+      <if test="record.ord != null" >
+        ord = #{record.ord,jdbcType=INTEGER},
+      </if>
+      <if test="record.sign != null" >
+        sign = #{record.sign,jdbcType=INTEGER},
+      </if>
+      <if test="record.ispreferential != null" >
+        ispreferential = #{record.ispreferential,jdbcType=INTEGER},
+      </if>
+      <if test="record.postage != null" >
+        postage = #{record.postage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createtime != null" >
+        createtime = #{record.createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatetime != null" >
+        updatetime = #{record.updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.admnum != null" >
+        admnum = #{record.admnum,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update shop
+    set id = #{record.id,jdbcType=VARCHAR},
+      shop_name = #{record.shopName,jdbcType=VARCHAR},
+      shop_price = #{record.shopPrice,jdbcType=VARCHAR},
+      shop_picture = #{record.shopPicture,jdbcType=VARCHAR},
+      userid = #{record.userid,jdbcType=VARCHAR},
+      information = #{record.information,jdbcType=VARCHAR},
+      detai = #{record.detai,jdbcType=VARCHAR},
+      standard = #{record.standard,jdbcType=VARCHAR},
+      is_delete = #{record.isDelete,jdbcType=INTEGER},
+      num = #{record.num,jdbcType=INTEGER},
+      isselling = #{record.isselling,jdbcType=INTEGER},
+      isdirectly = #{record.isdirectly,jdbcType=INTEGER},
+      isnew = #{record.isnew,jdbcType=INTEGER},
+      ord = #{record.ord,jdbcType=INTEGER},
+      sign = #{record.sign,jdbcType=INTEGER},
+      ispreferential = #{record.ispreferential,jdbcType=INTEGER},
+      postage = #{record.postage,jdbcType=VARCHAR},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      createtime = #{record.createtime,jdbcType=TIMESTAMP},
+      updatetime = #{record.updatetime,jdbcType=TIMESTAMP},
+      admnum = #{record.admnum,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.awb.model.Shop" >
+    update shop
+    <set >
+      <if test="shopName != null" >
+        shop_name = #{shopName,jdbcType=VARCHAR},
+      </if>
+      <if test="shopPrice != null" >
+        shop_price = #{shopPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="shopPicture != null" >
+        shop_picture = #{shopPicture,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null" >
+        userid = #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="information != null" >
+        information = #{information,jdbcType=VARCHAR},
+      </if>
+      <if test="detai != null" >
+        detai = #{detai,jdbcType=VARCHAR},
+      </if>
+      <if test="standard != null" >
+        standard = #{standard,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null" >
+        is_delete = #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="num != null" >
+        num = #{num,jdbcType=INTEGER},
+      </if>
+      <if test="isselling != null" >
+        isselling = #{isselling,jdbcType=INTEGER},
+      </if>
+      <if test="isdirectly != null" >
+        isdirectly = #{isdirectly,jdbcType=INTEGER},
+      </if>
+      <if test="isnew != null" >
+        isnew = #{isnew,jdbcType=INTEGER},
+      </if>
+      <if test="ord != null" >
+        ord = #{ord,jdbcType=INTEGER},
+      </if>
+      <if test="sign != null" >
+        sign = #{sign,jdbcType=INTEGER},
+      </if>
+      <if test="ispreferential != null" >
+        ispreferential = #{ispreferential,jdbcType=INTEGER},
+      </if>
+      <if test="postage != null" >
+        postage = #{postage,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null" >
+        updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="admnum != null" >
+        admnum = #{admnum,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.awb.model.Shop" >
+    update shop
+    set shop_name = #{shopName,jdbcType=VARCHAR},
+      shop_price = #{shopPrice,jdbcType=VARCHAR},
+      shop_picture = #{shopPicture,jdbcType=VARCHAR},
+      userid = #{userid,jdbcType=VARCHAR},
+      information = #{information,jdbcType=VARCHAR},
+      detai = #{detai,jdbcType=VARCHAR},
+      standard = #{standard,jdbcType=VARCHAR},
+      is_delete = #{isDelete,jdbcType=INTEGER},
+      num = #{num,jdbcType=INTEGER},
+      isselling = #{isselling,jdbcType=INTEGER},
+      isdirectly = #{isdirectly,jdbcType=INTEGER},
+      isnew = #{isnew,jdbcType=INTEGER},
+      ord = #{ord,jdbcType=INTEGER},
+      sign = #{sign,jdbcType=INTEGER},
+      ispreferential = #{ispreferential,jdbcType=INTEGER},
+      postage = #{postage,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      admnum = #{admnum,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

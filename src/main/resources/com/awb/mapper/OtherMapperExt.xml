@@ -1,0 +1,445 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.awb.mapper.OtherMapperExt" >
+
+
+  <select id="selectAdmuserInfo" resultType="com.awb.entity.vo.AdmuserInfoVo">
+    SELECT * from (SELECT money,num as usernum from user WHERE phone=#{phone}) a ,(SELECT totalnum,num,price from adminfo)b
+  </select>
+
+    <select id="selectLastDetail" resultType="com.awb.model.AccountDetail" parameterType="java.lang.String" >
+        SELECT status, bank_name as bankName,account_number as accountNumber,account_name as accountName,account_type as accountType,branch_name as branchName,remark  from account_detail WHERE user_id=#{id} ORDER BY create_time desc LIMIT 1
+    </select>
+
+    <select id="selectAllAccountDetail" parameterType="com.awb.entity.param.AccountParam" resultType="com.awb.entity.vo.AccountVO">
+        SELECT a.id,b. NAME `name`,phone,a.account_type accountType,a.account_name accountName,a.branch_name branchName,a.account_number bankCard,a.bank_name bankName,a.create_time createTime,a.update_time updateTime ,a.`status` FROM account_detail a LEFT JOIN user b on a.user_id=b.id
+        WHERE 1 = 1
+        <if test="startTime != null">
+            AND a.create_time &gt;= #{startTime}
+        </if>
+        <if test="endTime != null">
+            AND a.create_time &lt;= #{endTime}
+        </if>
+        <if test="name != null">
+            AND b.name LIKE concat('%',#{name},'%')
+        </if>
+        <if test="phone != null">
+            AND b.phone = #{phone}
+        </if>
+        <if test="status != null">
+            AND a.status = #{status}
+        </if>
+        ORDER BY a.create_time DESC
+    </select>
+
+    <select id="selectMyAccount" resultType="com.awb.model.Account" parameterType="java.lang.String" >
+        SELECT  bank_name as bankName,account_number as accountNumber,account_name as accountName,account_type as accountType,branch_name as branchName  from account WHERE user_id=#{id} ORDER BY create_time desc LIMIT 1
+    </select>
+
+    <select id="selectAllChargeOrder" resultType="com.awb.entity.vo.ChargeOrderVo" parameterType="com.awb.entity.param.ChargeOrderParm" >
+        SELECT a.id,b.name,b.phone, account_number as accountNumber,account_type as accountType,bank,branch_name branchName,fail_message as failMessage,a.`status`,a.money,a.create_time as createTime,a.update_time as updateTime,a.`name` accountName from charge_order a LEFT JOIN user b on a.userid=b.id
+        WHERE 1=1
+        <if test="startTime != null">
+            AND a.create_time &gt;= #{startTime}
+        </if>
+        <if test="endTime != null">
+            AND a.create_time &lt;= #{endTime}
+        </if>
+        <if test="name != null">
+            AND b.name LIKE concat('%',#{name},'%')
+        </if>
+        <if test="phone != null and phone!=''">
+            AND b.phone = #{phone}
+        </if>
+
+        <if test="status != null">
+            AND a.status = #{status}
+        </if>
+
+        ORDER BY a.create_time DESC
+    </select>
+
+    <select id="selectAllChargeOrder2" resultType="com.awb.entity.vo.ChargeOrderVo2" parameterType="com.awb.entity.param.ChargeOrderParm2" >
+        SELECT a.id,b.name,b.phone, account_number as accountNumber,account_type as accountType,bank,branch_name branchName,fail_message as failMessage,a.`status`,a.money,a.create_time as createTime,a.update_time as updateTime,a.`name` accountName from charge_order a LEFT JOIN user b on a.userid=b.id
+        WHERE 1=1
+        <if test="startTime != null">
+            AND a.create_time &gt;= #{startTime}
+        </if>
+        <if test="endTime != null">
+            AND a.create_time &lt;= #{endTime}
+        </if>
+        <if test="name != null and name!=''">
+            AND b.name LIKE concat('%',#{name},'%')
+        </if>
+        <if test="phone != null and phone!=''">
+            AND b.phone = #{phone}
+        </if>
+
+        <if test="status != null">
+            AND a.status = #{status}
+        </if>
+
+        ORDER BY a.create_time DESC
+    </select>
+
+    <select id="selectMyAom" resultType="com.awb.entity.vo.InfoVo" parameterType="java.lang.String">
+        SELECT * from (SELECT admnum num  from user WHERE phone=#{phone}) a ,(SELECT totalnum,num issuednum,price from adminfo)b;
+    </select>
+    <select id="selectMyBalanceRecord" resultType="com.awb.model.Record" parameterType="java.lang.String">
+    SELECT id,description,type,detail_type detailType,amt,balance,num,createtime from record WHERE (detail_type=3 or detail_type=4 or detail_type=5 or detail_type=6 or detail_type=7  or detail_type=9 or detail_type=10 or detail_type=11 or detail_type=17) and userid=#{uid} AND is_delete=0 ORDER BY createtime DESC
+    </select>
+
+    <select id="selectMyInfo" resultType="com.awb.entity.vo.UserVo" parameterType="java.lang.String">
+      SELECT phone,`name`,identitycard,balance,admnum,tgm,nodelever,balance from user WHERE id=#{uid}
+    </select>
+    <select id="listTransfer" resultType="com.awb.entity.vo.TransferVo" parameterType="java.lang.String">
+SELECT a.id,a.createtime,a.price,a.num,b.`name`,a.phone from deal a LEFT JOIN `user` b on a.phone=b.phone WHERE a.type=2 AND  a.userid=#{uid} ORDER BY a.createtime DESC
+    </select>
+
+
+    <select id="liseDaPanDeal" resultType="com.awb.entity.vo.DealVo">
+       SELECT a.id, b.name,b.phone,a.num,a.price,a.`status`,a.type,a.createtime,a.phone buyPhone,c.name buyName from deal a LEFT JOIN `user` b on a.userid=b.id LEFT JOIN `user` c on c.phone=a.phone WHERE a.type=4 AND a.`status`=0 ORDER BY a.createtime desc
+    </select>
+
+
+    <select id="listDealRecordSuccess" resultType="com.awb.entity.vo.DealRecordVo">
+        SELECT a.createtime,a.updatetime,a.num,a.type,a.price from deal a  WHERE a.type=4  and a.`status`=1 ORDER BY a.updatetime DESC
+    </select>
+
+
+    <select id="listBuyCompanyDeal" resultType="com.awb.entity.vo.DealVo">
+   SELECT a.id,b.`name`,b.phone,a.num,a.price,a.`status`,a.createtime,c.type payType,c.accountnum,c.picture,c.picture2,c.picture3,a.remark,c.shouldmoney,c.realmoney from deal a LEFT JOIN `user` b on a.userid=b.id LEFT JOIN moneyrecord c on c.dealid=a.id WHERE a.type=1 ORDER BY a.createtime DESC
+    </select>
+
+
+
+
+    <select id="listDeal" resultType="com.awb.entity.vo.DealVo">
+   SELECT a.id,b.`name`,b.phone,a.num,a.price,a.`status`,a.createtime,a.type,c.`name` buyName, a.phone buyPhone from deal a LEFT JOIN `user` b on a.userid=b.id LEFT JOIN `user` c on c.phone=a.phone WHERE (a.type=1 or a.type=2 or a.type=3 or a.type=4) ORDER BY a.createtime DESC
+    </select>
+
+    <select id="listAllSysuser" parameterType="com.awb.entity.param.UserParam" resultType="com.awb.entity.vo.AdminUserVo">
+        SELECT a.id,a.phone,a.`name`,a.admnum,a.balance,a.createtime,a.identitycard,a.`status`,a.money,a.nodelever,b.`name` parentname,a.tgm,a.times,a.updatetime,a.totalmoney,a.totalnum,b.phone parentphone,a.type,a.coupontimes from `user` a LEFT JOIN `user` b on a.parentid=b.id WHERE a.type!=1
+        <if test="startTime != null">
+            AND a.create_time &gt;= #{startTime}
+        </if>
+        <if test="endTime != null">
+            AND a.create_time &lt;= #{endTime}
+        </if>
+        <if test="name != null">
+            AND a.name LIKE concat('%',#{name},'%')
+        </if>
+        <if test="phone != null">
+            AND a.phone = #{phone}
+        </if>
+        ORDER BY a.createtime DESC
+    </select>
+
+
+    <select id="selectMyChildren" resultType="com.awb.entity.vo.TreeVO" parameterType="java.lang.String" >
+        SELECT id,a.phone,a.parentid as parentId,name,money,nodelever  from user a  WHERE a.parentid=#{id} ORDER BY a.createtime DESC
+    </select>
+
+
+    <select id="selectByParentId" resultType="com.awb.entity.vo.TreeVO" parameterType="java.lang.String" >
+        SELECT id,phone,parentid,name,money,nodelever from user  WHERE parentid=#{id}
+    </select>
+
+    <select id="selectAllInformation" resultType="com.awb.model.Information" parameterType="java.lang.Integer">
+        SELECT id,content,title,picture,url,type,createtime from informati WHERE type=#{type} ORDER BY createtime DESC
+    </select>
+
+    <select id="selectAllModule" resultType="com.awb.model.Information"  >
+        SELECT id,content,title,picture,url,type,createtime from informati WHERE type >2 ORDER BY createtime DESC
+    </select>
+        <!-- SELECT (IFNULL(SUM(a.num+b.sendnum),0))  num from deal a LEFT JOIN record b on a.id=b.dealid  and a.userid=b.userid WHERE a.updatetime>=DATE_SUB(now(),INTERVAL 30 day) and a.type=1 and a.`status`=1 and a.userid=#{userid}-->
+    <!-- SELECT  (d.num+e.num) num from (SELECT (IFNULL(SUM(a.num+b.sendnum),0))  num,a.userid from deal a LEFT JOIN record b on a.id=b.dealid  and a.userid=b.userid WHERE a.updatetime>=DATE_SUB(now(),INTERVAL 30 day) and a.type=1 and a.`status`=1 AND a.userid=#{userid} ) d , (SELECT IFNULL(sum(num),0) num,userid from deal WHERE type=16 AND updatetime>=DATE_SUB(now(),INTERVAL 90 day) AND userid=#{userid} ) e-->
+    <select id="selectAdmNum" resultType="com.awb.model.Deal"  parameterType="java.lang.String">
+    SELECT  (d.num+e.num+f.num) num from (SELECT (IFNULL(SUM(a.num+b.sendnum),0))  num,a.userid from deal a LEFT JOIN record b on a.id=b.dealid  and a.userid=b.userid WHERE a.updatetime>=DATE_SUB(now(),INTERVAL 30 day) and a.type=1 and a.`status`=1 AND a.userid=#{userid} ) d , (SELECT IFNULL(sum(num),0) num,userid from deal WHERE type=16 AND updatetime>=DATE_SUB(now(),INTERVAL 90 day) AND userid=#{userid} ) e,(SELECT IFNULL(sum(num),0) num,userid from record WHERE detail_type=2  AND createtime>=DATE_SUB(now(),INTERVAL 30 day) AND userid=#{userid} ) f
+    </select>
+
+    <select id="selectphpnews" resultType="com.awb.entity.vo.PhpVo"  parameterType="java.lang.String">
+      SELECT  TRUNCATE(IFNULL((totalmoney/NULLIF(totalnum,0)),0),2) price,phone,nodelever,admnum,name  from `user` WHERE phone=#{phone}
+    </select>
+
+    <select id="selectMerchant" resultType="com.awb.entity.vo.AppMerchantsVo" parameterType="java.lang.String" >
+SELECT a.id,a.storename,IFNULL(b.isnew,0) isnew,IFNULL(c.ispreferential,0) ispreferential,IFNULL(d.total,0) total FROM `user` a LEFT JOIN (SELECT COUNT(*) isnew,userid  from shop WHERE isnew=1 and sign=0  GROUP BY userid) b on a.id=b.userid LEFT JOIN (SELECT COUNT(*) ispreferential,userid  from shop WHERE ispreferential=1 and sign=0  GROUP BY userid) c on a.id=c.userid LEFT JOIN (SELECT COUNT(*) total,userid from shop WHERE  sign=0 GROUP BY userid) d on a.id=d.userid WHERE a.type=2 and a.id=#{id}
+    </select>
+
+
+    <select id="selectNewMerchant" resultType="com.awb.entity.vo.AppMerchantsVo" parameterType="java.lang.String" >
+        SELECT a.id,a.storename,IFNULL(b.isnew,0) isnew,IFNULL(c.ispreferential,0) ispreferential,IFNULL(d.total,0) total FROM `user` a LEFT JOIN (SELECT COUNT(*) isnew,userid  from shop WHERE isnew=1 and sign=1  GROUP BY userid) b on a.id=b.userid LEFT JOIN (SELECT COUNT(*) ispreferential,userid  from shop WHERE ispreferential=1 and sign=1  GROUP BY userid) c on a.id=c.userid LEFT JOIN (SELECT COUNT(*) total,userid from shop WHERE  sign=1 GROUP BY userid) d on a.id=d.userid WHERE a.type=2 and a.id=#{id}
+    </select>
+<!--         SELECT a.id,a.createtime,a.shop_name shopName,a.shop_picture shopPicture,b.price shopPrice,a.information,TRUNCATE(IFNULL((totalmoney/NULLIF(totalnum,0)),0),5) price,a.standard,a.userid ,a.isselling,a.isdirectly from shop a LEFT JOIN shop_lever b  on a.id=b.shopid LEFT JOIN `user` c on b.nodelever=c.nodelever-->
+    <select id="appListShop" resultType="com.awb.entity.vo.AppShopVo" parameterType="com.awb.entity.param.ShopParam" >
+        SELECT a.id,a.createtime,a.shop_name shopName,a.shop_picture shopPicture,b.price shopPrice,a.information,TRUNCATE(IFNULL((b.price/NULLIF(d.price,0)),0),0) price,a.standard,a.userid ,a.isselling,a.isdirectly from shop a LEFT JOIN shop_lever b  on a.id=b.shopid LEFT JOIN `user` c on b.nodelever=c.nodelever ,adminfo d
+        WHERE 1=1 and a.is_delete=0 and c.id=#{uid} and a.sign=0
+        <if test="startTime != null">
+            AND a.create_time &gt;= #{startTime}
+        </if>
+        <if test="endTime != null">
+            AND a.create_time &lt;= #{endTime}
+        </if>
+        <if test="userid != null">
+            AND a.userid = #{userid}
+        </if>
+        <if test="isnew != null">
+            AND a.isnew = #{isnew}
+        </if>
+        <if test="shopid != null">
+            AND a.shopid = #{shopid}
+        </if>
+        <if test="isselling != null">
+            AND a.isselling = #{isselling}
+        </if>
+        <if test="isdirectly != null">
+            AND a.isdirectly = #{isdirectly}
+        </if>
+        <if test="ispreferential != null">
+            AND a.ispreferential = #{ispreferential}
+        </if>
+        ORDER BY a.createtime DESC
+    </select>
+
+    <select id="selectmyorder" resultType="com.awb.entity.vo.AppShopOrderVo" parameterType="java.util.Map" >
+       SELECT a.address,a.`name`,a.phone,a.createtime,a.`status`,a.exepressnumber,a.exepresstype,a.id,a.num,a.ordernum,a.totalmoney,b.shop_name shopName,b.shop_picture shopPicture,b.standard,c.storename from shoporder a LEFT JOIN shop b on a.shopid=b.id LEFT JOIN `user` c on c.id=b.userid
+        WHERE 1=1
+        <if test="status != null">
+            AND a.status = #{status}
+        </if>
+        <if test="userid != null">
+            AND a.userid = #{userid}
+        </if>
+        <if test="type != null">
+            AND a.type = #{type}
+        </if>
+        ORDER BY a.createtime DESC
+    </select>
+
+    <select id="listAdminShop" resultType="com.awb.entity.vo.AdminShopVo" parameterType="java.util.Map" >
+        SELECT a.sign,a.shop_price shopPrice, a.id, a.shop_name shopName,b.storename,b.phone,a.information,a.standard,a.shop_picture shopPicture,a.createtime,a.userid,isdirectly,isnew,isselling,ispreferential from  shop a LEFT JOIN `user` b on a.userid=b.id
+        WHERE 1=1
+        <if test="userid != null">
+            AND a.userid = #{userid}
+        </if>
+        <if test="sign != null">
+            AND a.sign = #{sign}
+        </if>
+        ORDER BY a.createtime DESC
+    </select>
+
+    <select id="listmerchantvo" resultType="com.awb.entity.vo.MerchantVo"  >
+        SELECT a.id, a.phone,a.`name`,a.storename,IFNULL(b.totalnum,0) totalnum,IFNULL(c.newnum,0) newnum,IFNULL(d.preferentialnum,0) preferentialnum from (SELECT id,`name`,storename,phone,createtime from `user` WHERE type=2) a LEFT JOIN (SELECT COUNT(*) totalnum,userid from shop GROUP BY userid) b on a.id=b.userid LEFT JOIN (SELECT COUNT(*) newnum,userid from shop WHERE isnew=1 GROUP BY userid) c on c.userid=a.id LEFT JOIN (SELECT COUNT(*) preferentialnum,userid from shop WHERE ispreferential=1 GROUP BY userid) d on  a.id=d.userid ORDER BY a.createtime DESC
+    </select>
+
+    <select id="selectmonthdeal" resultType="com.awb.model.Deal" parameterType="java.lang.String" >
+        SELECT * FROM deal where DATE_SUB(CURDATE(), INTERVAL 30 DAY) &lt;= date(createtime) and type=4 and `status` =1 AND userid=#{uid}
+    </select>
+
+    <select id="listadminrecord" resultType="com.awb.entity.vo.AdminRecordVo" parameterType="com.awb.entity.param.RecordParam"  >
+       SELECT a.id,a.amt,a.num,a.description,a.sendnum,a.type,a.detail_type detailType,b.`name`,b.phone,a.createtime from record a LEFT JOIN `user` b on a.userid=b.id ORDER BY a.createtime DESC
+    </select>
+
+    <select id="selectAllTgm" resultType="java.lang.String"  >
+        SELECT from informati WHERE type >2 ORDER BY createtime DESC
+    </select>
+
+    <select id="selectAllShopOrder" resultType="com.awb.entity.vo.ShopOrderVo" parameterType="com.awb.entity.param.ShoporderParam" >
+        SELECT a.id, a.address,a.remark,a.`name` buyname,a.phone buyphone, b.`name`,b.phone, a.num,a.totalmoney ,a.createtime, IFNULL(b.nodelever,10) nodelever,a.`status`,a.updatetime,c.shop_name shopName,d.storename,exepresstype,exepressnumber  from shoporder a LEFT JOIN `user` b on a.userid=b.id LEFT JOIN shop c on c.id=a.shopid LEFT JOIN  `user` d on c.userid=d.id
+        WHERE 1=1
+        <if test="status != null">
+            AND a.status = #{status}
+        </if>
+        <if test="name != null and name!=''">
+            AND (a.name = #{name} or b.name=#{name})
+        </if>
+
+        ORDER BY a.createtime DESC
+    </select>
+
+    <select id="selectShopPrice" resultType="com.awb.entity.vo.ShopPriceVo" parameterType="java.lang.String" >
+
+         SELECT a.*,b.shop_name shopname from (SELECT shopid,price,nodelever from shop_lever WHERE shopid=#{shopid}) a LEFT JOIN shop b on a.shopid=b.id
+    </select>
+
+
+    <select id="shopdetail" resultType="com.awb.model.Shop" parameterType="java.util.Map" >
+        SELECT a.id,a.createtime,a.shop_name shopName,a.shop_picture shopPicture,b.price shopPrice,a.information,a.standard ,a.isselling,a.isdirectly,a.detai,a.userid from shop a LEFT JOIN shop_lever b  on a.id=b.shopid LEFT JOIN `user` c on b.nodelever=c.nodelever
+        WHERE 1=1  and c.id=#{uid} AND  a.id=#{shopid}
+
+    </select>
+
+
+    <select id="appListNewShop" resultType="com.awb.model.Shop" parameterType="com.awb.entity.param.ShopParam" >
+        SELECT a.id,a.createtime,a.shop_name shopName,a.shop_picture shopPicture,a.shop_price shopPrice,a.information,a.standard,a.userid ,a.isselling,a.isdirectly from shop a
+        WHERE 1=1 and a.is_delete=0  and a.sign=1
+        <if test="startTime != null">
+            AND a.create_time &gt;= #{startTime}
+        </if>
+        <if test="endTime != null">
+            AND a.create_time &lt;= #{endTime}
+        </if>
+        <if test="userid != null">
+            AND a.userid = #{userid}
+        </if>
+        <if test="isnew != null">
+            AND a.isnew = #{isnew}
+        </if>
+        <if test="shopid != null">
+            AND a.shopid = #{shopid}
+        </if>
+        <if test="isselling != null">
+            AND a.isselling = #{isselling}
+        </if>
+        <if test="isdirectly != null">
+            AND a.isdirectly = #{isdirectly}
+        </if>
+        <if test="ispreferential != null">
+            AND a.ispreferential = #{ispreferential}
+        </if>
+        ORDER BY a.createtime DESC
+    </select>
+
+<!--  SELECT a.id,a.createtime,a.shop_name shopName,a.shop_picture shopPicture,a.shop_price shopPrice,a.information,a.standard,a.userid ,a.isselling,a.isdirectly,(case b.nodelever WHEN 60 THEN convert(a.shop_price*0.4,decimal(10,2)) WHEN 50 THEN convert(a.shop_price*0.45,decimal(10,2)) WHEN 40 then convert(a.shop_price*0.5,decimal(10,2)) when 30 THEN convert(a.shop_price*0.55,decimal(10,2)) when 20 then   convert(a.shop_price*0.6,decimal(10,2))  WHEN 10 AND flg=1 then convert(a.shop_price*0.85,decimal(10,2)) ELSE a.shop_price END) postage   FROM shop a , `user` b
+        WHERE 1=1 and a.is_delete=0  and a.sign=1 and b.id=#{uid}-->
+    <select id="appListNewShop1" resultType="com.awb.model.Shop" parameterType="com.awb.entity.param.ShopParam" >
+        SELECT a.id,a.createtime,a.shop_name shopName,a.shop_picture shopPicture,a.shop_price shopPrice,a.information,a.standard,a.userid ,a.isselling,a.isdirectly,(case  WHEN b.nodelever= 60 AND a.isdirectly=1 THEN convert(a.shop_price*0.4,decimal(10,2)) WHEN b.nodelever=50 AND a.isdirectly=1 THEN convert(a.shop_price*0.45,decimal(10,2)) WHEN b.nodelever=40 AND a.isdirectly=1 then convert(a.shop_price*0.5,decimal(10,2)) when b.nodelever=30 AND a.isdirectly=1 THEN convert(a.shop_price*0.55,decimal(10,2)) when b.nodelever=20 AND a.isdirectly=1 then   convert(a.shop_price*0.6,decimal(10,2))  WHEN b.nodelever=10  AND flg=1 AND a.isdirectly=1 then convert(a.shop_price*0.85,decimal(10,2)) ELSE a.shop_price END) postage   FROM shop a , `user` b
+        WHERE 1=1 and a.is_delete=0  and a.sign=1 and b.id=#{uid}
+        <if test="startTime != null">
+            AND a.create_time &gt;= #{startTime}
+        </if>
+        <if test="endTime != null">
+            AND a.create_time &lt;= #{endTime}
+        </if>
+        <if test="userid != null">
+            AND a.userid = #{userid}
+        </if>
+        <if test="isnew != null">
+            AND a.isnew = #{isnew}
+        </if>
+        <if test="shopid != null">
+            AND a.shopid = #{shopid}
+        </if>
+        <if test="isselling != null">
+            AND a.isselling = #{isselling}
+        </if>
+        <if test="isdirectly != null">
+            AND a.isdirectly = #{isdirectly}
+        </if>
+        <if test="ispreferential != null">
+            AND a.ispreferential = #{ispreferential}
+        </if>
+        ORDER BY a.createtime DESC
+    </select>
+
+<!--   SELECT * from user  WHERE parentid=#{uid};
+SELECT * from user WHERE parentid in (SELECT id from user  WHERE parentid=#{uid});
+SELECT * from `user`  WHERE parentid in (SELECT id from user WHERE parentid in (SELECT id from user  WHERE parentid=#{uid}));
+-->
+    <select id="selectOnerebait" resultType="com.awb.entity.vo.TeamVo" parameterType="java.lang.String" >
+      SELECT id,phone,`name`,createtime,nodelever,IFNULL(b.ordernum,0) ordernum,IFNULL(b.consumMoney,0) consumMoney from user a LEFT JOIN (SELECT COUNT(*) ordernum,IFNULL(SUM(totalmoney),0) consumMoney,userid  from shoporder WHERE (`status`=1 or `status`=2) AND type=0 GROUP BY userid) b on a.id=b.userid WHERE a.parentid=#{uid};
+    </select>
+    <select id="selectTworebait" resultType="com.awb.entity.vo.TeamVo" parameterType="java.lang.String" >
+
+     SELECT id,phone,`name`,createtime,nodelever,IFNULL(b.ordernum,0) ordernum,IFNULL(b.consumMoney,0) consumMoney from user a LEFT JOIN (SELECT COUNT(*) ordernum,IFNULL(SUM(totalmoney),0) consumMoney,userid  from shoporder WHERE (`status`=1 or `status`=2) AND type=0 GROUP BY userid) b on a.id=b.userid WHERE a.parentid in (SELECT id from user  WHERE parentid=#{uid});
+    </select>
+
+    <select id="selectThreerebait" resultType="com.awb.entity.vo.TeamVo" parameterType="java.lang.String" >
+SELECT id,phone,`name`,createtime,nodelever,IFNULL(b.ordernum,0) ordernum,IFNULL(b.consumMoney,0) consumMoney from user a LEFT JOIN (SELECT COUNT(*) ordernum,IFNULL(SUM(totalmoney),0) consumMoney,userid  from shoporder WHERE `status`=1 AND type=0 GROUP BY userid) b on a.id=b.userid WHERE a.parentid in (SELECT id from user WHERE parentid in (SELECT id from user  WHERE parentid=#{uid}));
+    </select>
+
+    <select id="countPushNum" resultType="java.lang.String" parameterType="java.lang.String" >
+       SELECT  COUNT(*) num from `user` WHERE parentid=#{uid}
+    </select>
+<!-- SELECT * from `user` WHERE createtime &lt; '2019-10-26 17:50:37'-->
+    <select id="selectTest" resultType="com.awb.model.User"  >
+        SELECT * from `user` WHERE createtime &lt;= '2019-10-28 07:47:21'  AND createtime &gt;= '2019-10-27 11:51:33';
+    </select>
+<!--  SELECT a.id,a.createtime,a.shop_name shopName,a.shop_picture shopPicture,a.shop_price shopPrice,a.information,a.standard,a.userid ,a.isselling,a.isdirectly,(case b.nodelever WHEN 60 THEN convert(a.shop_price*0.4,decimal(10,2)) WHEN 50 THEN convert(a.shop_price*0.45,decimal(10,2)) WHEN 40 then convert(a.shop_price*0.5,decimal(10,2)) when 30 THEN convert(a.shop_price*0.55,decimal(10,2)) when 20 then   convert(a.shop_price*0.6,decimal(10,2))  WHEN 10 AND flg=1 then convert(a.shop_price*0.85,decimal(10,2)) ELSE a.shop_price END) postage   FROM shop a , `user` b
+        WHERE 1=1 and a.is_delete=0  and a.sign=1 and b.id=#{uid} AND a.id=#{shopid}-->
+    <select id="appListNewShopDetail" resultType="com.awb.model.Shop" parameterType="java.util.Map" >
+          SELECT a.id,a.createtime,a.shop_name shopName,a.shop_picture shopPicture,a.shop_price shopPrice,a.information,a.standard,a.userid ,a.isselling,a.isdirectly,(case  WHEN b.nodelever=60 and isdirectly=1 THEN convert(a.shop_price*0.4,decimal(10,2)) WHEN b.nodelever=50 and isdirectly=1 THEN convert(a.shop_price*0.45,decimal(10,2)) WHEN b.nodelever=40 and isdirectly=1 then convert(a.shop_price*0.5,decimal(10,2)) when b.nodelever=30 and isdirectly=1 THEN convert(a.shop_price*0.55,decimal(10,2))  when b.nodelever=20 and isdirectly=1 then   convert(a.shop_price*0.6,decimal(10,2))  WHEN b.nodelever=10 AND flg=1 and isdirectly=1 then convert(a.shop_price*0.85,decimal(10,2)) ELSE a.shop_price END) postage   FROM shop a , `user` b
+        WHERE 1=1 and a.is_delete=0  and a.sign=1 and b.id=#{uid} AND a.id=#{shopid}
+
+    </select>
+
+    <select id="listNewShoporder" resultType="com.awb.entity.vo.ShopOrderVo" parameterType="com.awb.entity.param.ShoporderParam" >
+        SELECT a.id, a.address,a.remark,a.`name` buyname,a.phone buyphone, b.`name`,b.phone, a.num,a.totalmoney ,a.createtime, IFNULL(b.nodelever,10) nodelever,a.`status`,a.updatetime,c.shop_name shopName,d.storename  from shoporder a LEFT JOIN `user` b on a.userid=b.id LEFT JOIN shop c on c.id=a.shopid LEFT JOIN  `user` d on c.userid=d.id
+        WHERE 1=1  and a.type=0 AND  a.status>0 and c.isselling=1
+        <if test="status != null">
+            AND a.status = #{status}
+        </if>
+        <if test="address != null">
+            AND a.address LIKE CONCAT('%',#{address},'%')
+        </if>
+        ORDER BY a.createtime DESC
+    </select>
+
+
+    <select id="adminBalance" resultType="com.awb.entity.vo.AdminBalanceVo" parameterType="com.awb.entity.param.BalanceParm" >
+        SELECT a.id,a.description,a.type,a.detail_type detailType,a.amt,a.num,a.createtime,a.remark,b.phone,b.`name` FROM record a LEFT JOIN `user` b on a.userid=b.id WHERE (a.detail_type=3 or a.detail_type=4 or a.detail_type=5 or a.detail_type=6 or a.detail_type=7  or a.detail_type=9 or a.detail_type=10 or a.detail_type=11 or a.detail_type=17)
+        <if test="startTime != null">
+            AND a.createtime &gt;= #{startTime}
+        </if>
+        <if test="endTime != null">
+            AND a.createtime &lt;= #{endTime}
+        </if>
+        <if test="phone != null and phone!=''">
+            AND b.phone = #{phone}
+        </if>
+        ORDER BY a.createtime DESC
+    </select>
+
+    <select id="adminAdm" resultType="com.awb.entity.vo.AdminBalanceVo" parameterType="com.awb.entity.param.BalanceParm" >
+        SELECT a.id,a.description,a.type,a.detail_type detailType,a.amt,a.num,a.createtime,a.remark,b.phone,b.`name` FROM record a LEFT JOIN `user` b on a.userid=b.id WHERE ( a.detail_type!=5 and a.detail_type!=6 and a.detail_type!=7  and a.detail_type!=9 and a.detail_type!=10 and a.detail_type!=11 and a.detail_type!=17)
+        <if test="startTime != null">
+            AND a.createtime &gt;= #{startTime}
+        </if>
+        <if test="endTime != null">
+            AND a.createtime &lt;= #{endTime}
+        </if>
+        <if test="phone != null and phone!=''">
+            AND b.phone = #{phone}
+        </if>
+        ORDER BY a.createtime DESC
+    </select>
+
+
+    <select id="exportAdm" resultType="com.awb.entity.vo.AdminBalanceVo2" parameterType="com.awb.entity.param.BalanceParm2" >
+        SELECT a.id,a.description,a.type,a.detail_type detailType,a.amt,a.num,a.createtime,a.remark,b.phone,b.`name` FROM record a LEFT JOIN `user` b on a.userid=b.id WHERE (a.detail_type!=2 and a.detail_type!=8 and a.detail_type!=5 and a.detail_type!=6 and a.detail_type!=7  and a.detail_type!=9 and a.detail_type!=10 and a.detail_type!=11 and a.detail_type!=17)
+        <if test="startTime != null">
+            AND a.createtime &gt;= #{startTime}
+        </if>
+        <if test="endTime != null">
+            AND a.createtime &lt;= #{endTime}
+        </if>
+        <if test="phone != null and phone!=''">
+            AND b.phone = #{phone}
+        </if>
+        ORDER BY a.createtime DESC
+    </select>
+
+
+    <select id="exportBalance" resultType="com.awb.entity.vo.AdminBalanceVo2" parameterType="com.awb.entity.param.BalanceParm2" >
+        SELECT a.id,a.description,a.type,a.detail_type detailType,a.amt,a.num,a.createtime,a.remark,b.phone,b.`name` FROM record a LEFT JOIN `user` b on a.userid=b.id WHERE (a.detail_type=3 or a.detail_type=4 or a.detail_type=5 or a.detail_type=6 or a.detail_type=7  or a.detail_type=9 or a.detail_type=10 or a.detail_type=11 or a.detail_type=17)
+        <if test="startTime != null">
+            AND a.createtime &gt;= #{startTime}
+        </if>
+        <if test="endTime != null">
+            AND a.createtime &lt;= #{endTime}
+        </if>
+        <if test="phone != null and phone!=''">
+            AND b.phone = #{phone}
+        </if>
+        ORDER BY a.createtime DESC
+    </select>
+
+
+    <select id="listUserArea" resultType="com.awb.model.User" parameterType="java.lang.String" >
+        SELECT  * from `user` WHERE #{address} LIKE  CONCAT(agentarea,'%') AND  TYPE =3
+    </select>
+
+    <select id="countBuyshopnum" resultType="java.lang.String" parameterType="java.lang.String" >
+       SELECT IFNULL(SUM(a.num),0) num  from shoporder a LEFT JOIN shop b on a.shopid=b.id LEFT JOIN `user` c on c.id=a.userid WHERE a.userid=#{uid} and b.isselling=1 AND a.`status`>0;
+    </select>
+</mapper>
